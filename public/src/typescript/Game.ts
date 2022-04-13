@@ -233,11 +233,6 @@ export class Game {
 
     setTokenClassForPlayer() {
         this.takenClass = this.playerClass;
-        // if (this.thisPlayer === 1) {
-        //     this.takenClass = this.playerClass;
-        // } else if (this.thisPlayer === 2) {
-        //     this.takenClass = this.computerClass;
-        // }
     }
 
     async startMultiplayerGameLoop() {
@@ -288,9 +283,6 @@ export class Game {
                         break;
                     }
                 }
-
-                //this.currentPlayerTurn = 2;
-                //turn();
             } else {
                 console.log('Warte auf anderen Spieler');
 
