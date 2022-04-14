@@ -1,5 +1,3 @@
-import { Config } from './config.interface';
-
 interface StructureConfig {
     element: HTMLElement;
     rows: number;
@@ -18,6 +16,7 @@ export class Structure {
         this.collumns = config.collumns;
     }
 
+    //DONE
     private createStructure(html: string) {
         const template = document.createElement('template');
 
@@ -26,6 +25,7 @@ export class Structure {
         return template.content.firstElementChild;
     }
 
+    //DONE
     public waitForPlayerBox(append: boolean) {
         if (append) {
             let waitPlayerBox = this.createStructure(`
@@ -35,13 +35,13 @@ export class Structure {
             `);
             this.element.appendChild(waitPlayerBox!);
         } else {
-            let waitingInfoBox = document.querySelector(
-                '.game__waitplayerbox'
-            )!;
+            let waitingInfoBox = document.querySelector('.game__waitplayerbox')!;
             this.element.removeChild(waitingInfoBox);
         }
     }
 
+    //TODO: add playernames??
+    //TODO: use this.structure() ??
     public showGamemode(gamemode: string) {
         let gamemodeBox = document.createElement('div');
         gamemodeBox.classList.add('game__gamemodebox');
@@ -53,36 +53,32 @@ export class Structure {
         this.element.appendChild(gamemodeBox);
     }
 
+    //TODO: change the way user gets info when room is full
     public async playButton(create: boolean) {
         return new Promise<string>((resolve) => {
-            // start button overlay
-
-            if (create) {
-                let startBtnContainer = this.createStructure(`
-                <div class="game__start">
-                    <h1 class="heading">4 Gewinnt</h1>
-                    <button class="btn">Start Game</button>
-                    <label class="codeInputLabel">for multiplayer-mode enter a roomcode</label>
-                    <input class="codeInput" maxlength="5">
-                </div>
-                `);
-
-                this.element.appendChild(startBtnContainer!);
-            }
+            // Generates the overlay with button and input field
+            let startBtnContainer = this.createStructure(`
+            <div class="game__start">
+                <h1 class="heading">4 Gewinnt</h1>
+                <button class="btn">Start Game</button>
+                <label class="codeInputLabel">for multiplayer-mode enter a roomcode</label>
+                <input class="codeInput" maxlength="5">
+            </div>
+            `);
+            this.element.appendChild(startBtnContainer!);
 
             let btn = document.querySelector('.btn')!;
 
-            if (!create) {
+            // when room is full the player gets a messagebox that the room he chose is full
+            if (create === false) {
                 let infoBox = document.createElement('span');
                 infoBox.classList.add('roomInfo');
                 infoBox.innerHTML = `the selected room is full.<br> please change the roomcode`;
                 let startBtnBox = document.querySelector('.game__start');
                 startBtnBox?.appendChild(infoBox);
-                //btn.parentElement!.classList.remove('hidden');
             }
 
-            let codeInput =
-                document.querySelector<HTMLInputElement>('.codeInput')!;
+            let codeInput = document.querySelector<HTMLInputElement>('.codeInput')!;
             let BtnEvent = function (this: any): void {
                 let userRoom = codeInput.value;
                 let startMenu = document.querySelector('.game__start')!;
@@ -95,13 +91,13 @@ export class Structure {
         });
     }
 
+    //TODO: add settings
     public generateSettingsOverlay(element: HTMLElement) {
         //settings overlay
-        //FIXME: use createStructure()
-        let settingsBox = document.createElement('div');
-        settingsBox.classList.add('settings-box');
-
-        element.appendChild(settingsBox);
+        let newSettingsBox = this.createStructure(`
+        <div class="settings-box"></div>
+        `);
+        element.appendChild(newSettingsBox!);
 
         //settings icon
         let settingsBtn = document.createElement('div');
@@ -111,37 +107,29 @@ export class Structure {
         icon.classList.add('fa-solid');
         icon.classList.add('fa-gear');
 
+        let settingsBox = document.querySelector<HTMLElement>('.settings-box')!;
         settingsBtn.addEventListener('click', function () {
-            settingsBox.style.display =
-                settingsBox.style.display === 'block' ? 'none' : 'block';
+            settingsBox.style.display = settingsBox.style.display === 'block' ? 'none' : 'block';
         });
 
         settingsBtn.appendChild(icon);
         element.appendChild(settingsBtn);
     }
 
+    //DONE
     private generateBoard(element: HTMLElement) {
-        //FIXME: use createStructure()
         //create backgroundbox
-        let bgBox = document.createElement('div');
-        bgBox.classList.add('game__backgroundbox');
-
-        let bgInnerBox = document.createElement('div');
-        bgInnerBox.classList.add('game__backgroundbox-box');
-
-        let boxTop = document.createElement('div');
-        let boxBottom = document.createElement('div');
-        let boxLeft = document.createElement('div');
-        let boxRight = document.createElement('div');
-        boxTop.classList.add('box-top');
-        boxBottom.classList.add('box-bottom');
-        boxLeft.classList.add('box-left');
-        boxRight.classList.add('box-right');
-
-        bgInnerBox.append(boxTop, boxBottom, boxLeft, boxRight);
-
-        bgBox.appendChild(bgInnerBox);
-        element.appendChild(bgBox);
+        let bgBox = this.createStructure(`
+        <div class="game__backgroundbox">
+            <div class="game__backgroundbox-box">
+                <div class="box-top"></div>
+                <div class="box-bottom"></div>
+                <div class="box-left"></div>
+                <div class="box-right"></div>
+            </div>
+        </div>
+        `);
+        element.appendChild(bgBox!);
 
         //create pseudoGrid
         let pseudoGrid = document.createElement('div');
@@ -151,20 +139,16 @@ export class Structure {
             let gridRow = document.createElement('div');
             gridRow.classList.add('pseudo__grid-row');
             gridRow.setAttribute('data-row', i.toString());
-
             for (let j = 0; j < this.rows; j++) {
-                let gridCell = document.createElement('div');
-                gridCell.classList.add('pseudo__grid__cell');
-
-                let cellSpace = document.createElement('div');
-                cellSpace.classList.add('pseudo__grid__cell-space');
-
-                gridCell.appendChild(cellSpace);
-                gridRow.appendChild(gridCell);
+                let gridCell = this.createStructure(`
+                <div class="pseudo__grid__cell">
+                    <div class="pseudo__grid__cell-space"></div>
+                </div>
+                `);
+                gridRow.appendChild(gridCell!);
             }
             pseudoGrid.appendChild(gridRow);
         }
-
         element.appendChild(pseudoGrid);
 
         //create realGrid
@@ -176,14 +160,12 @@ export class Structure {
             gridRow.classList.add('real__grid-row');
 
             for (let j = 0; j < this.rows; j++) {
-                let gridCell = document.createElement('div');
-                gridCell.classList.add('real__grid__cell');
-
-                let token = document.createElement('div');
-                token.classList.add('token');
-
-                gridCell.appendChild(token);
-                gridRow.appendChild(gridCell);
+                let gridCell = this.createStructure(`
+                <div class="real__grid__cell">
+                    <div class="token"></div>
+                </div>
+                `);
+                gridRow.appendChild(gridCell!);
             }
             realGrid.appendChild(gridRow);
         }
@@ -195,5 +177,3 @@ export class Structure {
         this.generateBoard(this.element);
     }
 }
-
-//slider höhe bei mobile dem bild anpassen
