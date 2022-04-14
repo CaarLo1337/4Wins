@@ -67,10 +67,6 @@ export class Game {
         });
     }
 
-    // userJoinRoom() {
-    //     console.log('user joins room');
-    // }
-
     awaitClick(): Promise<void> {
         return new Promise((resolve) => {
             // get all real collumns
@@ -79,9 +75,7 @@ export class Game {
             // transforms the pseudocollumn to the realcollumn
             let saveElementForPlayer = (element: HTMLElement): void => {
                 this.dataRow = parseInt(element.dataset.row!);
-                this.chosenCollumn = [
-                    ...allRows[this.dataRow].children,
-                ].reverse();
+                this.chosenCollumn = [...allRows[this.dataRow].children].reverse();
             };
 
             // the event that resolves the promise
@@ -156,21 +150,13 @@ export class Game {
                 let insideCell = this.chosenCollumn[i].querySelector('.token')!;
 
                 // check if the selected row is full and do turn() again if full
-                if (
-                    (i === 5 &&
-                        insideCell.classList.contains(this.playerClass)) ||
-                    (i === 5 &&
-                        insideCell.classList.contains(this.computerClass))
-                ) {
+                if ((i === 5 && insideCell.classList.contains(this.playerClass)) || (i === 5 && insideCell.classList.contains(this.computerClass))) {
                     turn();
                     break;
                 }
 
                 // check if the current row contains a coin and if not place your coin and finish the turn for the current player
-                if (
-                    !insideCell.classList.contains(this.computerClass) &&
-                    !insideCell.classList.contains(this.playerClass)
-                ) {
+                if (!insideCell.classList.contains(this.computerClass) && !insideCell.classList.contains(this.playerClass)) {
                     //adds class(coin) to the cell
                     insideCell.classList.add(this.takenClass);
 
@@ -178,12 +164,7 @@ export class Game {
                     await new Sound(this.audio).dropCoin();
 
                     //put the data for the current player in checkboard
-                    this.board = this.checkBoard.putDataInCheckBoard(
-                        this.board,
-                        i,
-                        this.dataRow,
-                        this.isPlayerTurn
-                    );
+                    this.board = this.checkBoard.putDataInCheckBoard(this.board, i, this.dataRow, this.isPlayerTurn);
 
                     let result = this.checkBoard.getWinner(this.board);
                     if (result != 0) {
@@ -243,24 +224,15 @@ export class Game {
                 await this.awaitClick();
 
                 for (let i = 0; i < this.chosenCollumn.length; i++) {
-                    let insideCell =
-                        this.chosenCollumn[i].querySelector('.token')!;
+                    let insideCell = this.chosenCollumn[i].querySelector('.token')!;
 
                     // check if the selected row is full and do turn() again if full
-                    if (
-                        (i === 5 &&
-                            insideCell.classList.contains(this.playerClass)) ||
-                        (i === 5 &&
-                            insideCell.classList.contains(this.computerClass))
-                    ) {
+                    if ((i === 5 && insideCell.classList.contains(this.playerClass)) || (i === 5 && insideCell.classList.contains(this.computerClass))) {
                         turn();
                         break;
                     }
                     // check if the current row contains a coin and if not place your coin and finish the turn for the current player
-                    if (
-                        !insideCell.classList.contains(this.computerClass) &&
-                        !insideCell.classList.contains(this.playerClass)
-                    ) {
+                    if (!insideCell.classList.contains(this.computerClass) && !insideCell.classList.contains(this.playerClass)) {
                         //adds class(coin) to the cell
                         insideCell.classList.add(this.takenClass);
 
@@ -294,12 +266,9 @@ export class Game {
                     });
                 });
                 let allRows = document.querySelectorAll('.real__grid-row');
-                this.chosenCollumn = [
-                    ...allRows[enemyChoice[1]].children,
-                ].reverse();
+                this.chosenCollumn = [...allRows[enemyChoice[1]].children].reverse();
 
-                let insideCell =
-                    this.chosenCollumn[enemyChoice[0]].querySelector('.token')!;
+                let insideCell = this.chosenCollumn[enemyChoice[0]].querySelector('.token')!;
 
                 insideCell.classList.add(this.computerClass);
 
@@ -337,14 +306,10 @@ export class Game {
             this.structure.showGamemode(this.gameMode);
 
             await new Promise((resolve) => {
-                this.socket.emit(
-                    'getAllPlayerInRoom',
-                    this.userRoom,
-                    (response: any) => {
-                        this.allPlayers = response;
-                        resolve(response);
-                    }
-                );
+                this.socket.emit('getAllPlayerInRoom', this.userRoom, (response: any) => {
+                    this.allPlayers = response;
+                    resolve(response);
+                });
             });
 
             if (this.allPlayers.length !== 2) {
@@ -359,8 +324,6 @@ export class Game {
             }
             this.thisPlayer = this.allPlayers.indexOf(this.socket.id) + 1;
             this.currentPlayerTurn = 1;
-            //TODO: start gameloop for multiplayer here
-
             this.setTokenClassForPlayer();
             this.startMultiplayerGameLoop();
         }
@@ -371,3 +334,7 @@ export class Game {
 //TODO: Hintergrund Grün wenn man gewinnt
 //TODO: replace socket.on with socket.once
 //TODO: add listener for player disconnect in multiplayergame
+//TODO: add a list for all open rooms
+//TODO: add score
+//TODO: save score in local storage
+//TODO: replace socket.id with playernames
