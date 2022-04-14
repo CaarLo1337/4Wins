@@ -16,7 +16,6 @@ export class Structure {
         this.collumns = config.collumns;
     }
 
-    //DONE
     private createStructure(html: string) {
         const template = document.createElement('template');
 
@@ -25,7 +24,6 @@ export class Structure {
         return template.content.firstElementChild;
     }
 
-    //DONE
     public waitForPlayerBox(append: boolean) {
         if (append) {
             let waitPlayerBox = this.createStructure(`
@@ -40,8 +38,6 @@ export class Structure {
         }
     }
 
-    //TODO: add playernames??
-    //TODO: use this.structure() ??
     public showGamemode(gamemode: string) {
         let gamemodeBox = document.createElement('div');
         gamemodeBox.classList.add('game__gamemodebox');
@@ -53,7 +49,6 @@ export class Structure {
         this.element.appendChild(gamemodeBox);
     }
 
-    //TODO: change the way user gets info when room is full
     public async playButton(create: boolean) {
         return new Promise<string>((resolve) => {
             // Generates the overlay with button and input field
@@ -91,7 +86,6 @@ export class Structure {
         });
     }
 
-    //TODO: add settings
     public generateSettingsOverlay(element: HTMLElement) {
         //settings overlay
         let newSettingsBox = this.createStructure(`
@@ -116,7 +110,6 @@ export class Structure {
         element.appendChild(settingsBtn);
     }
 
-    //DONE
     private generateBoard(element: HTMLElement) {
         //create backgroundbox
         let bgBox = this.createStructure(`

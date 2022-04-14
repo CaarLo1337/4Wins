@@ -56,7 +56,7 @@ export class Game {
     }
 
     userConnect() {
-        this.socket.on('connect', () => {
+        this.socket.once('connect', () => {
             console.log(`You connected with the id: ${this.socket.id}`);
         });
     }
@@ -239,9 +239,6 @@ export class Game {
                         //play audio for the coindrop
                         await new Sound(this.audio).dropCoin();
 
-                        //TODO: set checkboard
-                        //TODO: check for winner
-
                         console.log(i);
                         console.log(this.dataRow);
                         this.socket.emit('endTurn', i, this.dataRow);
@@ -315,7 +312,7 @@ export class Game {
             if (this.allPlayers.length !== 2) {
                 this.structure.waitForPlayerBox(true);
                 await new Promise((resolve) => {
-                    this.socket.on('playerJoined', (response: any) => {
+                    this.socket.once('playerJoined', (response: any) => {
                         this.allPlayers = response;
                         this.structure?.waitForPlayerBox(false);
                         resolve(response);
@@ -330,11 +327,3 @@ export class Game {
         this.structure.generateSettingsOverlay(this.element);
     }
 }
-
-//TODO: Hintergrund Grün wenn man gewinnt
-//TODO: replace socket.on with socket.once
-//TODO: add listener for player disconnect in multiplayergame
-//TODO: add a list for all open rooms
-//TODO: add score
-//TODO: save score in local storage
-//TODO: replace socket.id with playernames
