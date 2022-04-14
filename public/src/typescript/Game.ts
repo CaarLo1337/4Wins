@@ -217,6 +217,8 @@ export class Game {
     }
 
     async startMultiplayerGameLoop() {
+        this.board = this.checkBoard.generateCheckBoard();
+
         const turn = async () => {
             if (this.currentPlayerTurn === this.thisPlayer) {
                 console.log(`Du bist am zug, Spieler ${this.thisPlayer}`);
@@ -239,9 +241,16 @@ export class Game {
                         //play audio for the coindrop
                         await new Sound(this.audio).dropCoin();
 
-                        console.log(i);
-                        console.log(this.dataRow);
+                        this.board = this.checkBoard.putDataInCheckBoard(this.board, i, this.dataRow, this.thisPlayer);
+
                         this.socket.emit('endTurn', i, this.dataRow);
+
+                        let result = this.checkBoard.getWinner(this.board);
+
+                        if (result != 0) {
+                            this.winMatch(result);
+                            break;
+                        }
 
                         if (this.currentPlayerTurn == 1) {
                             this.currentPlayerTurn = 2;
@@ -271,6 +280,16 @@ export class Game {
 
                 //play audio for the coindrop
                 await new Sound(this.audio).dropCoin();
+
+                this.board = this.checkBoard.putDataInCheckBoard(this.board, enemyChoice[0], enemyChoice[1], this.currentPlayerTurn!);
+
+                let result = this.checkBoard.getWinner(this.board);
+
+                if (result != 0) {
+                    this.winMatch(result);
+                    return;
+                }
+
                 if (this.currentPlayerTurn == 1) {
                     this.currentPlayerTurn = 2;
                 } else {
