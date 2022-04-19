@@ -1,0 +1,19 @@
+.game {
+    &__show-winner {
+        background-color: rgba(133, 133, 133, 0.719);
+        position: absolute;
+        top: 200px;
+        z-index: 2;
+        height: 200px;
+        width: 850px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+            font-size: 54px;
+            font-weight: 900;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+        }
+    }
+}

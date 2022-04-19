@@ -1,0 +1,25 @@
+        
+.pseudo__grid {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    &-row {
+        display: flex;
+        flex-direction: column;
+    }
+    &__cell {
+        position: relative;
+        height: 100px;
+        width: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &-space {
+            height: 70px;
+            width: 70px;
+            border-radius: 100px;
+            outline: 50px solid $boardColor;
+        }
+    }
+}
