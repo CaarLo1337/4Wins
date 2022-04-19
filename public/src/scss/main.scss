@@ -20,7 +20,6 @@ $boardColor: rgb(29, 29, 29);
 
 .game {
     margin-top: 100px;
-    width: 100vw;
     position: relative;
     display: flex;
     justify-content: center;
@@ -159,7 +158,23 @@ $boardColor: rgb(29, 29, 29);
     }
 
 
-
+    &__show-winner {
+        background-color: rgba(133, 133, 133, 0.719);
+        position: absolute;
+        top: 200px;
+        z-index: 2;
+        height: 200px;
+        width: 850px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+            font-size: 54px;
+            font-weight: 900;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+        }
+    }
 
     &__backgroundbox {
         top: -30px;

@@ -118,6 +118,14 @@ export class Game {
                     let token = element.querySelector('.token');
                     token?.classList.add('pulse');
                 });
+
+                let winningScreen = this.structure?.createStructure(`
+                <div class="game__show-winner">
+                    <p>You won!</p>
+                </div>
+                `);
+                this.element.appendChild(winningScreen!);
+
                 await new Sound(this.audio).win();
             } else {
                 let bgBox = document.querySelector('.game__backgroundbox');
@@ -131,6 +139,14 @@ export class Game {
                     let token = element.querySelector('.token');
                     token?.classList.add('pulse');
                 });
+
+                let winningScreen = this.structure?.createStructure(`
+                <div class="game__show-winner">
+                    <p>You lost!</p>
+                </div>
+                `);
+                this.element.appendChild(winningScreen!);
+
                 await new Sound(this.audio).reset();
             }
         }
