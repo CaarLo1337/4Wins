@@ -1,8 +1,6 @@
 .game {        
-    &__waitplayerbox {
-        height: 600px;
+    &__gamestatus {
         width: 800px;
-        background-color: rgba(29, 29, 29, 0.815);
         position: relative;
         z-index: 2;
         display: flex;

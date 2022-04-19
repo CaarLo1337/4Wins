@@ -106,7 +106,7 @@ export class Game {
     }
 
     async winMatch(winner: number) {
-        if (this.gameMode === 'vsComputer') {
+        if (this.gameMode === 'sp') {
             //change pulsshadow to green
             if (winner === this.player) {
                 let bgBox = document.querySelector('.game__backgroundbox');
@@ -229,31 +229,62 @@ export class Game {
         turn();
     }
 
-    async initRoom(initStructure: boolean) {
-        this.userRoom = await this.structure?.playButton(initStructure);
-        let isPlayerInRoom;
-        if (this.userRoom === '') {
-            //console.log('user plays against computer');
-
-            this.gameMode = 'vsComputer';
+    async showMultiplayerScreen(redo: boolean) {
+        if (redo) {
+            this.userRoom = await this.structure?.choseMpRoom(true);
         } else {
-            //sends join request to the server for the chosen room number
-            //console.log(`request to join room: ${this.userRoom}`);
-
+            this.userRoom = await this.structure?.choseMpRoom(false);
+        }
+        if (this.userRoom === '') {
+            this.showMultiplayerScreen(true);
+        } else {
+            let isPlayerInRoom; //true = room is full #### false = room is empty
             await new Promise((resolve) => {
                 this.socket.emit('join', this.userRoom, (response: any) => {
-                    console.log(response);
                     isPlayerInRoom = response;
                     resolve(response);
                 });
             });
 
             if (isPlayerInRoom) {
-                //console.log('do it again');
-                await this.initRoom(false);
-            } else {
-                this.gameMode = 'vsPlayer';
+                this.showMultiplayerScreen(true);
             }
+            this.structure?.displayRoomcode(this.userRoom!);
+            await new Promise((resolve) => {
+                this.socket.emit('getAllPlayerInRoom', this.userRoom, (response: any) => {
+                    this.allPlayers = response;
+                    resolve(response);
+                });
+            });
+
+            if (this.allPlayers.length !== 2) {
+                this.structure?.waitForPlayerBox(true);
+                await new Promise((resolve) => {
+                    this.socket.once('playerJoined', (response: any) => {
+                        this.allPlayers = response;
+                        this.structure?.waitForPlayerBox(false);
+                        resolve(response);
+                    });
+                });
+            }
+            this.thisPlayer = this.allPlayers.indexOf(this.socket.id) + 1;
+            this.currentPlayerTurn = 1;
+            this.setTokenClassForPlayer();
+            this.structure?.diplayPlayerStatus();
+            this.startMultiplayerGameLoop();
+        }
+    }
+
+    async showTitlescreen() {
+        this.gameMode = await this.structure?.choseGamemode();
+
+        if (this.gameMode === 'sp') {
+            // start game against ki
+            this.startGameLoop();
+        } else if (this.gameMode === 'mp') {
+            // connect to server
+            this.userConnect();
+            this.showMultiplayerScreen(false);
         }
     }
 
@@ -266,8 +297,8 @@ export class Game {
 
         const turn = async () => {
             if (this.currentPlayerTurn === this.thisPlayer) {
-                console.log(`Du bist am zug, Spieler ${this.thisPlayer}`);
-
+                let statusBox = document.querySelector('.game__gamestatus')!;
+                statusBox.innerHTML = `<p class="game__gamestatus-info">Your turn. Set a coin.</p>`;
                 await this.awaitClick();
 
                 for (let i = 0; i < this.chosenCollumn.length; i++) {
@@ -308,7 +339,8 @@ export class Game {
                 }
             } else {
                 console.log('Warte auf anderen Spieler');
-
+                let statusBox = document.querySelector('.game__gamestatus')!;
+                statusBox.innerHTML = `<p class="game__gamestatus-info">It's the opponent's turn. Wait until he places his coin.</p>`;
                 let enemyChoice: number[] = [];
                 await new Promise((resolve) => {
                     this.socket.once('test', (response: any) => {
@@ -355,39 +387,7 @@ export class Game {
         });
         this.structure.init();
 
-        this.userConnect();
-
-        await this.initRoom(true);
-
-        if (this.gameMode === 'vsComputer') {
-            this.structure.showGamemode(this.gameMode);
-            this.startGameLoop();
-        } else if (this.gameMode === 'vsPlayer') {
-            //console.log('player vs player');
-            this.structure.showGamemode(this.gameMode);
-
-            await new Promise((resolve) => {
-                this.socket.emit('getAllPlayerInRoom', this.userRoom, (response: any) => {
-                    this.allPlayers = response;
-                    resolve(response);
-                });
-            });
-
-            if (this.allPlayers.length !== 2) {
-                this.structure.waitForPlayerBox(true);
-                await new Promise((resolve) => {
-                    this.socket.once('playerJoined', (response: any) => {
-                        this.allPlayers = response;
-                        this.structure?.waitForPlayerBox(false);
-                        resolve(response);
-                    });
-                });
-            }
-            this.thisPlayer = this.allPlayers.indexOf(this.socket.id) + 1;
-            this.currentPlayerTurn = 1;
-            this.setTokenClassForPlayer();
-            this.startMultiplayerGameLoop();
-        }
-        this.structure.generateSettingsOverlay(this.element);
+        await this.showTitlescreen();
+        this.structure.generateSettingsOverlay(this.element); // move to end of titlescreen?
     }
 }
