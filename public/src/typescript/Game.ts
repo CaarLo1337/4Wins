@@ -105,7 +105,36 @@ export class Game {
         return newCurrentRow;
     }
 
-    winMatch(winner: number) {
+    async winMatch(winner: number) {
+        if (this.gameMode === 'vsComputer') {
+            //change pulsshadow to green
+            if (winner === this.player) {
+                let bgBox = document.querySelector('.game__backgroundbox');
+                bgBox?.classList.add('win');
+
+                let allWinningCells = this.checkBoard.getWinningCoins(this.board)!;
+
+                allWinningCells.forEach((element) => {
+                    let token = element.querySelector('.token');
+                    token?.classList.add('pulse');
+                });
+                await new Sound(this.audio).win();
+            } else {
+                let bgBox = document.querySelector('.game__backgroundbox');
+                bgBox?.classList.add('lose');
+                let playerToken = document.querySelectorAll('.c-taken');
+                console.log(playerToken);
+
+                let allWinningCells = this.checkBoard.getWinningCoins(this.board)!;
+
+                allWinningCells.forEach((element) => {
+                    let token = element.querySelector('.token');
+                    token?.classList.add('pulse');
+                });
+                await new Sound(this.audio).reset();
+            }
+        }
+
         console.log(winner, 'wins the game');
     }
 
