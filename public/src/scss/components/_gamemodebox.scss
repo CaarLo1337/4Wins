@@ -1,0 +1,11 @@
+.game {        
+    &__gamemodebox {
+        position: absolute;
+        top: -80px;
+        p {
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+        }
+    }
+}

@@ -1,0 +1,78 @@
+.game {        
+    &__backgroundbox {
+        top: -30px;
+        position: absolute;
+        height: 660px;
+        width: 850px;
+        border-radius: 20px;
+        z-index: 0;
+        &-box {
+            height: 100%;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.603);
+            border-radius: 15px;
+            .box-top {
+                background-color: $boardColor;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                height: 33px;
+                width: 100%;
+            }
+            .box-bottom {
+                background-color: $boardColor;
+                border-bottom-left-radius: 15px;
+                border-bottom-right-radius: 15px;
+                height: 33px;
+                width: 100%;
+                bottom: 0px;
+                position: absolute;
+            }
+            .box-left {
+                background-color: $boardColor;
+                position: absolute;
+                top: 0px;
+                border-top-left-radius: 15px;
+                border-bottom-left-radius: 15px;
+                height: 100%;
+                width: 33px;
+            }
+            .box-right {
+                background-color: $boardColor;
+                height: 100%;
+                width: 33px;
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
+            }
+        }
+        &::after, &::before {
+            content: "";
+            width: 860px;
+            height: 670px;
+            position: absolute;
+            z-index: -2;
+            background-image: linear-gradient(0, rgb(219,62,177), rgb(77, 77, 255));
+            background-size: 100% 500%;
+            background-position: 0% 0%;
+            top: -5px;
+            left: -5px;
+            border-radius: 20px;
+            animation: move 1500ms infinite alternate linear;
+        }
+        &::after {
+            filter: blur(200px);
+        }
+        &.win {
+            &::after, &::before {
+                background-image: linear-gradient(0, rgb(42, 199, 37), rgb(67, 236, 137));
+            }
+        }
+        &.lose {
+            &::after, &::before {
+                background-image: linear-gradient(0, rgb(190, 30, 91), rgb(236, 30, 30));
+            }
+        }
+    }
+}

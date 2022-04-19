@@ -1,0 +1,47 @@
+@keyframes move {
+    0% {
+        background-position: top center;
+    }
+    100% {
+        background-position: bottom center;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes doPulse {
+    0% {
+        width: 60px;
+        height: 60px;
+    }
+    50% {
+        width: 35px;
+        height: 35px;
+    }
+    100% {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@keyframes doPulseMini {
+    0% {
+        width: 30px;
+        height: 30px;
+    }
+    50% {
+        width: 20px;
+        height: 20px;
+    }
+    100% {
+        width: 30px;
+        height: 30px;
+    }
+}

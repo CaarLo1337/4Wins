@@ -89,19 +89,19 @@ export class Structure {
     public generateSettingsOverlay(element: HTMLElement) {
         //settings overlay
         let newSettingsBox = this.createStructure(`
-        <div class="settings-box"></div>
+        <div class="game__settings-box"></div>
         `);
         element.appendChild(newSettingsBox!);
 
         //settings icon
         let settingsBtn = document.createElement('div');
-        settingsBtn.classList.add('settings-btn');
+        settingsBtn.classList.add('game__settings-btn');
         let icon = document.createElement('span');
         icon.classList.add('icon');
         icon.classList.add('fa-solid');
         icon.classList.add('fa-gear');
 
-        let settingsBox = document.querySelector<HTMLElement>('.settings-box')!;
+        let settingsBox = document.querySelector<HTMLElement>('.game__settings-box')!;
         settingsBtn.addEventListener('click', function () {
             settingsBox.style.display = settingsBox.style.display === 'block' ? 'none' : 'block';
         });
