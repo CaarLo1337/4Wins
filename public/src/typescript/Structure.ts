@@ -16,7 +16,7 @@ export class Structure {
         this.collumns = config.collumns;
     }
 
-    private createStructure(html: string) {
+    public createStructure(html: string) {
         const template = document.createElement('template');
 
         template.innerHTML = html.trim();

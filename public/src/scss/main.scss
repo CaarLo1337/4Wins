@@ -20,7 +20,6 @@ $boardColor: rgb(29, 29, 29);
 
 .game {
     margin-top: 100px;
-    width: 100vw;
     position: relative;
     display: flex;
     justify-content: center;
@@ -159,7 +158,23 @@ $boardColor: rgb(29, 29, 29);
     }
 
 
-
+    &__show-winner {
+        background-color: rgba(133, 133, 133, 0.719);
+        position: absolute;
+        top: 200px;
+        z-index: 2;
+        height: 200px;
+        width: 850px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+            font-size: 54px;
+            font-weight: 900;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+        }
+    }
 
     &__backgroundbox {
         top: -30px;
@@ -227,6 +242,16 @@ $boardColor: rgb(29, 29, 29);
         }
         &::after {
             filter: blur(200px);
+        }
+        &.win {
+            &::after, &::before {
+                background-image: linear-gradient(0, rgb(42, 199, 37), rgb(67, 236, 137));
+            }
+        }
+        &.lose {
+            &::after, &::before {
+                background-image: linear-gradient(0, rgb(190, 30, 91), rgb(236, 30, 30));
+            }
         }
     }
     
@@ -460,6 +485,12 @@ $boardColor: rgb(29, 29, 29);
                     transform: translate(-50%, -50%);
                 }
             }
+            .pulse {
+                animation: doPulse 1s infinite ease-in-out;
+                &::after {
+                    animation: doPulseMini 1s infinite ease-in-out;
+                }
+            }
             .c-taken {
                 transition: top 1s;
                 top: 50%;
@@ -496,5 +527,35 @@ $boardColor: rgb(29, 29, 29);
     }
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes doPulse {
+    0% {
+        width: 60px;
+        height: 60px;
+    }
+    50% {
+        width: 35px;
+        height: 35px;
+    }
+    100% {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@keyframes doPulseMini {
+    0% {
+        width: 30px;
+        height: 30px;
+    }
+    50% {
+        width: 20px;
+        height: 20px;
+    }
+    100% {
+        width: 30px;
+        height: 30px;
     }
 }
