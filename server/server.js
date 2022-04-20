@@ -71,20 +71,23 @@ io.on('connection', (socket) => {
         socket.to(currentRoomNumber).emit('test', empfang);
     });
 
+    socket.on('leave', (roomNumber) => {
+        socket.leave(roomNumber);
+        delete rooms[roomNumber];
+        console.log(rooms, 'test hier');
+    });
+
     socket.on('disconnect', () => {
         if (currentRoomNumber !== undefined) {
-            console.log(
-                `${socket.id} disconnected from room: ${currentRoomNumber}`
-            );
+            console.log(`${socket.id} disconnected from room: ${currentRoomNumber}`);
             console.log(currentRoomNumber);
             if (rooms[currentRoomNumber].length == 2) {
                 let leavingUser = rooms[currentRoomNumber].indexOf(socket.id);
-
-                rooms[currentRoomNumber] = rooms[currentRoomNumber].splice(
-                    leavingUser - 1,
-                    1
-                );
+                socket.to(currentRoomNumber).emit('playerLeft', 'playerlefttest');
+                rooms[currentRoomNumber] = rooms[currentRoomNumber].splice(leavingUser - 1, 1);
                 console.log(`users in room left: ${rooms[currentRoomNumber]}`);
+
+                //hier weiter machen
             } else {
                 console.log('delete room');
                 delete rooms[currentRoomNumber];

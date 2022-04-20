@@ -16,6 +16,21 @@ export class Structure {
         this.collumns = config.collumns;
     }
 
+    public resetStructure() {
+        let rcContainer = document.querySelector('.game__roomcode')!;
+        let gsContainer = document.querySelector('.game__gamestatus')!;
+        let tokens = document.querySelectorAll('.c-taken, .p-taken'!);
+        for (let i = 0; i < tokens.length; i++) {
+            tokens[i].classList.remove('p-taken');
+            tokens[i].classList.remove('c-taken');
+        }
+
+        // this.element.removeChild(rcContainer);
+        // this.element.removeChild(gsContainer);
+        rcContainer?.remove();
+        gsContainer?.remove();
+    }
+
     public createStructure(html: string) {
         const template = document.createElement('template');
 

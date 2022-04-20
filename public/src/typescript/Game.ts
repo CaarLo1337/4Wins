@@ -31,6 +31,7 @@ export class Game {
     allPlayers: any;
     thisPlayer: any;
     currentPlayerTurn: number | undefined;
+    reset: boolean;
 
     constructor(public config: Config) {
         this.element = config.mainElement;
@@ -53,6 +54,7 @@ export class Game {
         this.minimax = new Minimax(config.depth, this.rows, this.collumns);
         this.socket = io('http://localhost:3000/');
         this.allPlayers = [];
+        this.reset = false;
     }
 
     userConnect() {
@@ -68,8 +70,8 @@ export class Game {
     }
 
     awaitClick(): Promise<void> {
+        // get all real collumns
         return new Promise((resolve) => {
-            // get all real collumns
             let allRows = document.querySelectorAll('.real__grid-row');
 
             // transforms the pseudocollumn to the realcollumn
@@ -84,6 +86,7 @@ export class Game {
                 pseudoRows.forEach((e) => {
                     e.removeEventListener('click', event);
                 });
+                clearInterval(myInterval);
                 resolve();
             };
 
@@ -94,6 +97,13 @@ export class Game {
             pseudoRows.forEach((e) => {
                 e.addEventListener('click', event);
             });
+
+            let myInterval = setInterval(() => {
+                if (this.reset === true) {
+                    clearInterval(myInterval);
+                    resolve();
+                }
+            }, 1000);
         });
     }
 
@@ -277,7 +287,7 @@ export class Game {
 
     async showTitlescreen() {
         this.gameMode = await this.structure?.choseGamemode();
-
+        this.reset = false;
         if (this.gameMode === 'sp') {
             // start game against ki
             this.startGameLoop();
@@ -302,6 +312,9 @@ export class Game {
                 await this.awaitClick();
 
                 for (let i = 0; i < this.chosenCollumn.length; i++) {
+                    if (this.reset === true) {
+                        break;
+                    }
                     let insideCell = this.chosenCollumn[i].querySelector('.token')!;
 
                     // check if the selected row is full and do turn() again if full
@@ -342,6 +355,10 @@ export class Game {
                 let statusBox = document.querySelector('.game__gamestatus')!;
                 statusBox.innerHTML = `<p class="game__gamestatus-info">It's the opponent's turn. Wait until he places his coin.</p>`;
                 let enemyChoice: number[] = [];
+                //checks if someone left the game
+                if (this.reset === true) {
+                    return;
+                }
                 await new Promise((resolve) => {
                     this.socket.once('test', (response: any) => {
                         enemyChoice = response;
@@ -375,6 +392,14 @@ export class Game {
                 turn();
             }
         };
+        this.socket.once('playerLeft', (test) => {
+            this.structure?.resetStructure();
+            this.checkBoard = new CheckBoard(this.rows, this.collumns);
+            this.reset = true;
+            this.socket.emit('leave', this.userRoom);
+            this.userRoom = undefined;
+            this.showTitlescreen();
+        });
         turn();
     }
 
