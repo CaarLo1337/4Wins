@@ -11,4 +11,5 @@ export interface Config {
     computerClass: string;
     audio: Audio;
     depth: number;
+    IO_SERVER: string;
 }

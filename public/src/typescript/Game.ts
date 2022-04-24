@@ -52,7 +52,7 @@ export class Game {
         this.board = [];
         //init minimax
         this.minimax = new Minimax(config.depth, this.rows, this.collumns);
-        this.socket = io('http://localhost:3000/');
+        this.socket = io(config.IO_SERVER);
         this.allPlayers = [];
         this.reset = false;
     }

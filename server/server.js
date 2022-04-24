@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -10,7 +12,7 @@ const io = new Server(httpServer, {
     },
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.SERVER_PORT;
 
 let rooms = {};
 

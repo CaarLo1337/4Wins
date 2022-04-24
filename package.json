@@ -4,17 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "webpack serve",
     "build-dev": "webpack --mode development",
     "build-prod": "webpack --mode production",
-    "server": "npx nodemon server/server.js",
-    "start": "concurrently --kill-others \"npx nodemon server/server.js\" \"webpack --mode development\""
+    "server-dev": "npx nodemon server/server.js",
+    "server-prod": "node server/server.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^7.1.0",
     "css-loader": "^6.7.0",
+    "dotenv-webpack": "^7.1.0",
     "mini-css-extract-plugin": "^2.6.0",
     "nodemon": "^2.0.15",
     "postcss-loader": "^6.2.1",
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@types/socket.io": "^3.0.2",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "postcss-sass-loader": "^1.1.0",
     "socket.io": "^4.4.1",
