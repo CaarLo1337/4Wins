@@ -52,25 +52,10 @@ export class Game {
         this.board = [];
         //init minimax
         this.minimax = new Minimax(config.depth, this.rows, this.collumns);
-        this.socket = io('ws://82.165.100.170');
+        this.socket = io(config.IO_SERVER);
         this.allPlayers = [];
         this.reset = false;
     }
-
-    //     server {
-    //         listen 80;
-
-    //         server_name 82.165.100.170;
-
-    //         location / {
-    //                 proxy_set_header X-Real-IP $remote_addr;
-    //                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    //                 proxy_set_header Host $host;
-    //                 proxy_set_header X-NginX-Proxy true;
-    //                 proxy_pass http://localhost:3000/;
-    //                 proxy_redirect http://localhost:3000/ http://$server_name;
-    //         }
-    // }
 
     userConnect() {
         this.socket.once('connect', () => {
