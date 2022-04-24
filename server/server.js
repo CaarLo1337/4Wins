@@ -73,11 +73,11 @@ io.on('connection', (socket) => {
         socket.to(currentRoomNumber).emit('test', empfang);
     });
 
-    socket.on('leave', (roomNumber) => {
-        socket.leave(roomNumber);
-        delete rooms[roomNumber]; // change this !!
-        console.log(`${timestamp} - room ${roomNumber} - user left room`);
-    });
+    // socket.on('leave', (roomNumber) => {
+    //     socket.leave(roomNumber);
+    //     delete rooms[roomNumber]; // change this !!
+    //     console.log(`${timestamp} - room ${roomNumber} - user left room`);
+    // });
 
     socket.on('disconnect', () => {
         if (currentRoomNumber !== undefined) {
