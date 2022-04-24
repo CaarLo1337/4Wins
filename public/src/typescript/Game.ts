@@ -392,7 +392,7 @@ export class Game {
                 turn();
             }
         };
-        this.socket.once('playerLeft', (test) => {
+        this.socket.once('playerLeft', () => {
             this.structure?.resetStructure();
             this.checkBoard = new CheckBoard(this.rows, this.collumns);
             this.reset = true;
