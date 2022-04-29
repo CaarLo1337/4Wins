@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-    mode: 'development',
     entry: ['./public/src/typescript/index.ts', './public/src/scss/main.scss'],
     watch: true,
     devServer: {
