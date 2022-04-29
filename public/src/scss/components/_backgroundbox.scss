@@ -1,76 +1,90 @@
-.game {        
+.game {
     &__backgroundbox {
-        top: -30px;
+        top: -3rem;
         position: absolute;
-        height: 660px;
-        width: 850px;
-        border-radius: 20px;
+        height: 66rem;
+        width: 85rem;
+        border-radius: 2rem;
         z-index: 0;
+
         &-box {
             height: 100%;
             width: 100%;
             background-color: rgba(255, 255, 255, 0.603);
-            border-radius: 15px;
+            border-radius: 1.5rem;
+
             .box-top {
                 background-color: $boardColor;
-                border-top-left-radius: 15px;
-                border-top-right-radius: 15px;
-                height: 33px;
+                border-top-left-radius: 1.5rem;
+                border-top-right-radius: 1.5rem;
+                height: 3.3rem;
                 width: 100%;
             }
+
             .box-bottom {
                 background-color: $boardColor;
-                border-bottom-left-radius: 15px;
-                border-bottom-right-radius: 15px;
-                height: 33px;
+                border-bottom-left-radius: 1.5rem;
+                border-bottom-right-radius: 1.5rem;
+                height: 3.3rem;
                 width: 100%;
                 bottom: 0px;
                 position: absolute;
             }
+
             .box-left {
                 background-color: $boardColor;
                 position: absolute;
                 top: 0px;
-                border-top-left-radius: 15px;
-                border-bottom-left-radius: 15px;
+                border-top-left-radius: 1.5rem;
+                border-bottom-left-radius: 1.5rem;
                 height: 100%;
-                width: 33px;
+                width: 3.3rem;
             }
+
             .box-right {
                 background-color: $boardColor;
                 height: 100%;
-                width: 33px;
+                width: 3.3rem;
                 position: absolute;
                 top: 0px;
                 right: 0px;
-                border-top-right-radius: 15px;
-                border-bottom-right-radius: 15px;
+                border-top-right-radius: 1.5rem;
+                border-bottom-right-radius: 1.5rem;
             }
         }
-        &::after, &::before {
+
+        &::after,
+        &::before {
             content: "";
-            width: 860px;
-            height: 670px;
+            width: 86rem;
+            height: 67rem;
             position: absolute;
             z-index: -2;
-            background-image: linear-gradient(0, rgb(219,62,177), rgb(77, 77, 255));
+            background-image: linear-gradient(0, rgb(219, 62, 177), rgb(77, 77, 255));
             background-size: 100% 500%;
             background-position: 0% 0%;
-            top: -5px;
-            left: -5px;
-            border-radius: 20px;
+            top: -.5rem;
+            left: -.5rem;
+            border-radius: 2rem;
             animation: move 1500ms infinite alternate linear;
         }
+
         &::after {
-            filter: blur(200px);
+            filter: blur(20rem);
         }
+
         &.win {
-            &::after, &::before {
+
+            &::after,
+            &::before {
                 background-image: linear-gradient(0, rgb(42, 199, 37), rgb(67, 236, 137));
             }
         }
+
         &.lose {
-            &::after, &::before {
+
+            &::after,
+            &::before {
                 background-image: linear-gradient(0, rgb(190, 30, 91), rgb(236, 30, 30));
             }
         }

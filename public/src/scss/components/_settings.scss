@@ -5,22 +5,25 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transform: translateX(500px);
+            transform: translateX(50rem);
+
             .icon {
-                font-size: 60px;
+                font-size: 6rem;
                 color: rgb(185, 185, 185);
                 cursor: pointer;
+
                 &:hover {
                     color: rgb(104, 104, 104);
                 }
             }
         }
+
         &-box {
             display: none;
             position: absolute;
             z-index: 5;
-            height: 600px;
-            width: 800px;
+            height: 60rem;
+            width: 80rem;
             background-color: rgba(29, 29, 29, 0.815);
         }
     }

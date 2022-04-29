@@ -1,11 +1,12 @@
 .game {
     &__roomcode {
-        width: 800px;
+        width: 80rem;
         position: absolute;
         z-index: 2;
+
         &-info {
             position: absolute;
-            top: -70px;
+            top: -7rem;
             right: 0px;
             color: #fff;
             font-family: 'Montserrat', sans-serif;

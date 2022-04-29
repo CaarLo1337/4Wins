@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+:root {
+    --player-coin-main-color: rgb(0, 183, 255);
+    --player-coin-border-color: rgb(0, 149, 207);
+}
+
+body {
+    background: rgb(29, 29, 29);
+    box-sizing: border-box;
+    font-size: 1.6rem;
+}
+
+html {
+    font-size: 62.5%; // 10px = 1rem
+
+    @media screen and (max-width: 1100px) {
+        font-size: 45%;
+    }
+
+    @media screen and (max-width: 790px) {
+        font-size: 21%;
+    }
+}

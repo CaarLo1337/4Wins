@@ -2,74 +2,83 @@
     position: absolute;
     z-index: 1;
     display: flex;
+
     &-row {
         display: flex;
         flex-direction: column;
     }
 
     overflow: hidden;
+
     .win {
         &::before {
             content: "";
             position: absolute;
-            height: 100px;
-            width: 100px;
-            background-image: linear-gradient(0, rgb(247, 248, 184),rgb(240, 204, 0));
+            height: 10rem;
+            width: 10rem;
+            background-image: linear-gradient(0, rgb(247, 248, 184), rgb(240, 204, 0));
             background-size: 100% 500%;
             background-position: 0% 0%;
             animation: move 1000ms infinite alternate linear, fadeIn 2s;
-            filter: blur(20px);
+            filter: blur(2rem);
         }
     }
 
     &__cell {
-        height: 100px;
-        width: 100px;
+        height: 10rem;
+        width: 10rem;
         position: relative;
+
         .token {
-            height: 45px;
-            width: 45px;
-            border-radius: 100px;
+            height: 6.5rem;
+            width: 6.5rem;
+            border-radius: 10rem;
             background-color: var(--player-coin-main-color);
             position: absolute;
             left: 50%;
-            top: -1000px;
+            top: -100rem;
             transform: translateX(-50%) translateY(-50%);
         }
+
         .p-taken {
             transition: all 1s;
             top: 50%;
-            border: 8px solid var(--player-coin-border-color);
+            border: .8rem solid var(--player-coin-border-color);
+
             &::after {
                 content: "";
-                width: 30px;
-                height: 30px;
+                width: 3rem;
+                height: 3rem;
                 background-color: var(--player-coin-border-color);
                 position: absolute;
-                border-radius: 100px;
+                border-radius: 10rem;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
         }
+
         .pulse {
             animation: doPulse 1s infinite ease-in-out;
+
             &::after {
                 animation: doPulseMini 1s infinite ease-in-out;
             }
         }
+
         .c-taken {
             transition: top 1s;
             top: 50%;
             background-color: rgb(255, 0, 119);
-            border: 8px solid rgb(196, 0, 91);
+            border: .8rem solid rgb(196, 0, 91);
+
             &::after {
                 content: "";
-                width: 30px;
-                height: 30px;
+                width: 3rem;
+                height: 3rem;
                 background-color: rgb(196, 0, 91);
                 position: absolute;
-                border-radius: 100px;
+                border-radius: 10rem;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);

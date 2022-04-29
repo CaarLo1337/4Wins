@@ -1,15 +1,16 @@
-.game {        
+.game {
     &__waitplayerbox {
-        height: 600px;
-        width: 800px;
+        height: 60rem;
+        width: 80rem;
         background-color: rgba(29, 29, 29, 0.815);
         position: relative;
         z-index: 2;
         display: flex;
         flex-direction: column;
+
         &-info {
             position: absolute;
-            top: -70px;
+            top: -7rem;
             color: #fff;
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
