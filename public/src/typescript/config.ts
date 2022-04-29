@@ -17,5 +17,5 @@ export const config: Config = {
         volume: 0.4,
     },
     depth: 4,
-    IO_SERVER: process.env.IO_SERVER || 'ws://82.165.100.170',
+    IO_SERVER: process.env.IO_SERVER || '',
 };
