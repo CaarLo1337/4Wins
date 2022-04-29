@@ -16,6 +16,21 @@ export class Structure {
         this.collumns = config.collumns;
     }
 
+    public resetStructure() {
+        let rcContainer = document.querySelector('.game__roomcode')!;
+        let gsContainer = document.querySelector('.game__gamestatus')!;
+        let tokens = document.querySelectorAll('.c-taken, .p-taken'!);
+        for (let i = 0; i < tokens.length; i++) {
+            tokens[i].classList.remove('p-taken');
+            tokens[i].classList.remove('c-taken');
+        }
+
+        // this.element.removeChild(rcContainer);
+        // this.element.removeChild(gsContainer);
+        rcContainer?.remove();
+        gsContainer?.remove();
+    }
+
     public createStructure(html: string) {
         const template = document.createElement('template');
 
@@ -24,11 +39,29 @@ export class Structure {
         return template.content.firstElementChild;
     }
 
+    public diplayPlayerStatus() {
+        let psContainer = this.createStructure(`
+        <div class="game__gamestatus">
+
+        </div>
+        `);
+        this.element.appendChild(psContainer!);
+    }
+
+    public displayRoomcode(roomcode: string) {
+        let rcContainer = this.createStructure(`
+        <div class="game__roomcode">
+            <p class="game__roomcode-info">Room: ${roomcode}</p>
+        </div>
+        `);
+        this.element.appendChild(rcContainer!);
+    }
+
     public waitForPlayerBox(append: boolean) {
         if (append) {
             let waitPlayerBox = this.createStructure(`
             <div class="game__waitplayerbox">
-                <p>Wait for second player</p>
+                <p class="game__waitplayerbox-info">Wait for second player to connect!</p>
             </div>
             `);
             this.element.appendChild(waitPlayerBox!);
@@ -47,6 +80,80 @@ export class Structure {
             gamemodeBox.innerHTML = '<p>Player vs. Player</p>';
         }
         this.element.appendChild(gamemodeBox);
+    }
+
+    public async choseMpRoom(redo: boolean) {
+        return new Promise<string>((resolve) => {
+            let mpContainer: Element | null;
+            if (redo) {
+                mpContainer = this.createStructure(`
+                <div class="game__mproom">
+                    <label class="codeInputLabel">Enter an Roomcode to join or create a Room</label>
+                    <label class="codeInputLabel red">*Room is full or your Roomcode is invalid*</label>
+                    <div class="mp-form">
+                        <input class="codeInput red" maxlength="5" >
+                        <button class="game__mproom-btn-mp">START</button>
+                    </div>
+                </div>
+                `);
+            } else {
+                mpContainer = this.createStructure(`
+                <div class="game__mproom">
+                    <label class="codeInputLabel">Enter an Roomcode to join or create a Room</label>
+                    <div class="mp-form">
+                        <input class="codeInput" maxlength="5" required>
+                        <button class="game__mproom-btn-mp">START</button>
+                    </div>
+                </div>
+                `);
+            }
+
+            this.element.appendChild(mpContainer!);
+
+            let startBtn = document.querySelector('.game__mproom-btn-mp');
+            let codeInput = document.querySelector<HTMLInputElement>('.codeInput')!;
+            let BtnEvent = function (this: any): void {
+                let userRoom = codeInput.value;
+                let startMenu = document.querySelector('.game__mproom')!;
+                let gameContainer = document.querySelector('.game')!;
+                gameContainer.removeChild(startMenu);
+                startBtn?.removeEventListener('click', BtnEvent);
+                resolve(userRoom);
+            };
+            startBtn?.addEventListener('click', BtnEvent);
+        });
+    }
+
+    public async choseGamemode() {
+        return new Promise<string>((resolve) => {
+            let gmContainer = this.createStructure(`
+            <div class="game__start">
+                <h1 class="game__start-heading">Connect 4</h1>
+                <button class="game__start-btn-sp">Singleplayer</button>
+                <button class="game__start-btn-mp">Multiplayer</button>
+            </div>
+            `);
+            this.element.appendChild(gmContainer!);
+
+            let spBtn = document.querySelector('.game__start-btn-sp');
+            let mpBtn = document.querySelector('.game__start-btn-mp');
+            let titlescreen = document.querySelector('.game__start');
+            let gameContainer = document.querySelector('.game');
+
+            let spEvent = function (this: any) {
+                gameContainer?.removeChild(titlescreen!);
+                spBtn?.removeEventListener('click', spEvent);
+                resolve('sp');
+            };
+            spBtn?.addEventListener('click', spEvent);
+
+            let mpEvent = function (this: any) {
+                gameContainer?.removeChild(titlescreen!);
+                spBtn?.removeEventListener('click', mpEvent);
+                resolve('mp');
+            };
+            mpBtn?.addEventListener('click', mpEvent);
+        });
     }
 
     public async playButton(create: boolean) {
